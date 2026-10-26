@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gerencie suas receitas e despesas no Finance Manager.">
+    <title>Transações | Finance Manager</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/transacoes.css">
+    <script src="../js/config.js" defer></script>
+    <script src="../js/api.js" defer></script>
+    <script src="../js/transacoes.js" defer></script>
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="../index.html">
+                <span class="brand-mark">F</span>
+                <span>Finance<span class="brand-light">Manager</span></span>
+            </a>
+
+            <p class="nav-caption">MENU PRINCIPAL</p>
+
+            <nav class="navigation" aria-label="Navegação principal">
+                <a class="nav-link" href="./dashboard.html">
+                    <span class="nav-icon">▦</span> Dashboard
+                </a>
+                <a class="nav-link active" href="./transacoes.html" aria-current="page">
+                    <span class="nav-icon">↔</span> Transações
+                </a>
+                <a class="nav-link" href="./categorias.html">
+                    <span class="nav-icon">◈</span> Categorias
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <span class="note-icon">✦</span>
+                    <strong>Organize seu dinheiro</strong>
+                    <p>Acompanhe suas movimentações e mantenha suas finanças em dia.</p>
+                </div>
+                <button class="logout-button" id="logoutButton" type="button">
+                    <span>↪</span> Sair da conta
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button class="menu-toggle" id="menuToggle" type="button"
+                    aria-label="Abrir menu" aria-expanded="false">☰</button>
+                <div class="breadcrumb">Finance Manager <span>/</span> Transações</div>
+                <div class="topbar-status">
+                    <span class="status-dot"></span>
+                    Suas finanças
+                </div>
+            </header>
+
+            <section class="page-content">
+                <div class="page-heading">
+                    <div>
+                        <p class="eyebrow">CONTROLE FINANCEIRO</p>
+                        <h1>Transações</h1>
+                        <p class="page-description">
+                            Registre e acompanhe suas receitas e despesas.
+                        </p>
+                    </div>
+                    <button class="button button-primary" id="newTransactionButton" type="button">
+                        <span>＋</span> Nova transação
+                    </button>
+                </div>
+
+                <div class="feedback" id="pageMessage" role="status"
+                    aria-live="polite" hidden></div>
+
+                <section class="panel form-panel" id="transactionFormPanel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">MOVIMENTAÇÃO</p>
+                            <h2 id="formTitle">Adicionar transação</h2>
+                            <p class="muted">Preencha os dados da movimentação financeira.</p>
+                        </div>
+                        <button class="icon-button" id="closeFormButton" type="button"
+                            aria-label="Fechar formulário">×</button>
+                    </div>
+
+                    <form id="transactionForm">
+                        <div class="type-selector">
+                            <label class="type-option income-option">
+                                <input type="radio" name="type" value="income" checked>
+                                <span class="type-symbol">↙</span>
+                                <span>
+                                    <strong>Receita</strong>
+                                    <small>Dinheiro que entra</small>
+                                </span>
+                            </label>
+                            <label class="type-option expense-option">
+                                <input type="radio" name="type" value="expense">
+                                <span class="type-symbol">↗</span>
+                                <span>
+                                    <strong>Despesa</strong>
+                                    <small>Dinheiro que sai</small>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field field-wide">
+                                <label for="description">Descrição <span>*</span></label>
+                                <input id="description" name="description" type="text"
+                                    maxlength="255" placeholder="Ex.: Salário, mercado, aluguel"
+                                    required>
+                            </div>
+
+                            <div class="field">
+                                <label for="amount">Valor (R$) <span>*</span></label>
+                                <div class="amount-input">
+                                    <span>R$</span>
+                                    <input id="amount" name="amount" type="number"
+                                        min="0.01" max="999999999999" step="0.01"
+                                        placeholder="0,00" required>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label for="transactionDate">Data <span>*</span></label>
+                                <input id="transactionDate" name="transaction_date"
+                                    type="date" required>
+                            </div>
+
+                            <div class="field field-wide">
+                                <label for="categoryId">Categoria <span>*</span></label>
+                                <select id="categoryId" name="category_id" required>
+                                    <option value="">Selecione uma categoria</option>
+                                </select>
+                                <small class="field-hint" id="categoryHint">
+                                    As categorias disponíveis dependem do tipo de transação.
+                                </small>
+                            </div>
+
+                            <div class="field field-wide">
+                                <label for="notes">Observações</label>
+                                <textarea id="notes" name="notes" maxlength="1000"
+                                    rows="3" placeholder="Detalhes adicionais (opcional)"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="button button-secondary" id="cancelFormButton"
+                                type="button">Cancelar</button>
+                            <button class="button button-primary" id="saveButton" type="submit">
+                                Salvar transação
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="panel filters-panel">
+                    <div class="panel-heading compact-heading">
+                        <div>
+                            <h2>Histórico de transações</h2>
+                            <p class="muted">Use os filtros para encontrar uma movimentação.</p>
+                        </div>
+                        <span class="results-count" id="resultsCount">0 registros</span>
+                    </div>
+
+                    <form id="filtersForm" class="filters-grid">
+                        <div class="field">
+                            <label for="filterType">Tipo</label>
+                            <select id="filterType" name="type">
+                                <option value="">Todos os tipos</option>
+                                <option value="income">Receitas</option>
+                                <option value="expense">Despesas</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="filterCategory">Categoria</label>
+                            <select id="filterCategory" name="category_id">
+                                <option value="">Todas as categorias</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="startDate">Data inicial</label>
+                            <input id="startDate" name="start_date" type="date">
+                        </div>
+
+                        <div class="field">
+                            <label for="endDate">Data final</label>
+                            <input id="endDate" name="end_date" type="date">
+                        </div>
+
+                        <div class="filter-actions">
+                            <button class="button button-primary" type="submit">Filtrar</button>
+                            <button class="button button-secondary" id="clearFiltersButton"
+                                type="button">Limpar</button>
+                        </div>
+                    </form>
+
+                    <div class="table-wrapper">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Data</th>
+                                    <th>Tipo</th>
+                                    <th class="align-right">Valor</th>
+                                    <th class="align-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody">
+                                <tr>
+                                    <td colspan="6" class="table-message">Carregando transações...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mobile-transactions" id="mobileTransactions"></div>
+                </section>
+
+                <footer class="page-footer">
+                    <span>Finance Manager</span>
+                    <span>Suas finanças, sob controle.</span>
+                </footer>
+            </section>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <dialog class="confirm-dialog" id="deleteDialog">
+        <div class="dialog-icon">!</div>
+        <h2>Excluir transação?</h2>
+        <p>Essa ação não pode ser desfeita. Deseja realmente excluir esta movimentação?</p>
+        <div class="dialog-actions">
+            <button class="button button-secondary" id="cancelDeleteButton" type="button">
+                Cancelar
+            </button>
+            <button class="button button-danger" id="confirmDeleteButton" type="button">
+                Excluir
+            </button>
+        </div>
+    </dialog>
+</body>
+</html>

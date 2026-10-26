@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7f9fc">
+    <meta name="description" content="Entre na sua conta Finance Manager para acompanhar suas finanças.">
+
+    <title>Entrar | Finance Manager</title>
+
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body class="auth-page">
+    <header class="auth-header">
+        <a class="brand" href="../index.html" aria-label="Finance Manager - Página inicial">
+            <span class="brand-icon" aria-hidden="true">F</span>
+            <span>finance<span class="brand-highlight">manager</span></span>
+        </a>
+
+        <a class="back-link" href="../index.html">← Página inicial</a>
+    </header>
+
+    <main class="auth-main">
+        <section class="auth-container" aria-labelledby="login-title">
+            <div class="auth-heading">
+                <span class="auth-symbol" aria-hidden="true">F</span>
+                <h1 id="login-title">Bem-vinda de volta!</h1>
+                <p>Entre na sua conta para continuar organizando suas finanças.</p>
+            </div>
+
+            <form id="login-form" class="auth-form" novalidate>
+                <div
+                    id="auth-message"
+                    class="auth-message"
+                    role="alert"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+                <div class="form-field">
+                    <label class="form-label" for="email">E-mail</label>
+                    <input
+                        class="form-input"
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="voce@exemplo.com"
+                        autocomplete="email"
+                        maxlength="254"
+                        required
+                    >
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label" for="password">Senha</label>
+
+                    <div class="form-input-wrapper">
+                        <input
+                            class="form-input password-input"
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            class="password-toggle"
+                            type="button"
+                            data-toggle-password="password"
+                            aria-label="Mostrar senha"
+                            aria-pressed="false"
+                        >
+                            Mostrar
+                        </button>
+                    </div>
+                </div>
+
+                <button class="button button-primary auth-submit" type="submit">
+                    Entrar na minha conta
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Ainda não tem uma conta?
+                <a href="./cadastro.html">Criar conta gratuita</a>
+            </p>
+        </section>
+    </main>
+
+    <footer class="auth-footer">
+        Finance Manager · Controle financeiro pessoal
+    </footer>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

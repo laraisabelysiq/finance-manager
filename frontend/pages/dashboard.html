@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel financeiro pessoal do Finance Manager.">
+    <title>Painel financeiro | Finance Manager</title>
+
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-page">
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <a href="../index.html" class="brand">
+                <span class="brand-icon" aria-hidden="true">F</span>
+                <span>finance<span class="brand-highlight">manager</span></span>
+            </a>
+
+            <div class="sidebar-section-label">MENU PRINCIPAL</div>
+
+            <nav class="sidebar-nav" aria-label="Menu principal">
+                <a href="./dashboard.html" class="nav-link active" aria-current="page">
+                    <span class="nav-icon" aria-hidden="true">◫</span>
+                    <span>Painel financeiro</span>
+                </a>
+                <a href="./transacoes.html" class="nav-link">
+                    <span class="nav-icon" aria-hidden="true">⇄</span>
+                    <span>Transações</span>
+                </a>
+                <a href="./categorias.html" class="nav-link">
+                    <span class="nav-icon" aria-hidden="true">▦</span>
+                    <span>Categorias</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-tip">
+                    <span class="tip-icon" aria-hidden="true">✦</span>
+                    <strong>Organize suas finanças</strong>
+                    <p>Acompanhe suas receitas e despesas para tomar decisões melhores.</p>
+                </div>
+
+                <button class="logout-button" id="logout-button" type="button">
+                    <span aria-hidden="true">↪</span>
+                    Sair da conta
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button
+                    class="menu-toggle"
+                    id="menu-toggle"
+                    type="button"
+                    aria-label="Abrir menu"
+                    aria-expanded="false"
+                    aria-controls="sidebar"
+                >☰</button>
+
+                <div class="breadcrumb">
+                    <span>Finance Manager</span>
+                    <span class="breadcrumb-divider">/</span>
+                    <strong>Painel financeiro</strong>
+                </div>
+
+                <div class="topbar-user">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div class="user-info">
+                        <strong id="user-name">Minha conta</strong>
+                        <span>Área financeira</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section class="welcome-section">
+                    <div>
+                        <p class="eyebrow">VISÃO GERAL</p>
+                        <h1 id="welcome-title">Olá! 👋</h1>
+                        <p class="welcome-description">
+                            Veja como estão suas finanças e acompanhe sua evolução.
+                        </p>
+                    </div>
+
+                    <a href="./transacoes.html" class="primary-button">
+                        <span aria-hidden="true">＋</span>
+                        Nova transação
+                    </a>
+                </section>
+
+                <div
+                    class="dashboard-alert"
+                    id="dashboard-alert"
+                    role="status"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+                <section class="summary-grid" aria-label="Resumo financeiro">
+                    <article class="summary-card balance-card">
+                        <div class="summary-card-top">
+                            <span class="summary-label">Saldo do mês</span>
+                            <span class="summary-icon balance-icon" aria-hidden="true">◈</span>
+                        </div>
+                        <p class="summary-value" id="summary-balance">R$ 0,00</p>
+                        <p class="summary-description">Receitas menos despesas</p>
+                    </article>
+
+                    <article class="summary-card">
+                        <div class="summary-card-top">
+                            <span class="summary-label">Receitas do mês</span>
+                            <span class="summary-icon income-icon" aria-hidden="true">↗</span>
+                        </div>
+                        <p class="summary-value" id="summary-income">R$ 0,00</p>
+                        <p class="summary-description">Total recebido no mês</p>
+                    </article>
+
+                    <article class="summary-card">
+                        <div class="summary-card-top">
+                            <span class="summary-label">Despesas do mês</span>
+                            <span class="summary-icon expense-icon" aria-hidden="true">↘</span>
+                        </div>
+                        <p class="summary-value" id="summary-expenses">R$ 0,00</p>
+                        <p class="summary-description">Total gasto no mês</p>
+                    </article>
+
+                    <article class="summary-card">
+                        <div class="summary-card-top">
+                            <span class="summary-label">Transações</span>
+                            <span class="summary-icon transactions-icon" aria-hidden="true">⇄</span>
+                        </div>
+                        <p class="summary-value" id="summary-count">0</p>
+                        <p class="summary-description">Movimentações neste mês</p>
+                    </article>
+                </section>
+
+                <section class="dashboard-grid">
+                    <article class="panel chart-panel">
+                        <div class="panel-header">
+                            <div>
+                                <h2>Receitas e despesas</h2>
+                                <p>Comparativo dos últimos seis meses</p>
+                            </div>
+                            <span class="panel-badge">Últimos 6 meses</span>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas
+                                id="finance-chart"
+                                role="img"
+                                aria-label="Gráfico comparativo de receitas e despesas"
+                            ></canvas>
+                            <div class="chart-empty" id="chart-empty">
+                                <span aria-hidden="true">▥</span>
+                                <p>Seu gráfico aparecerá aqui quando houver movimentações.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="panel quick-panel">
+                        <div class="panel-header">
+                            <div>
+                                <h2>Acesso rápido</h2>
+                                <p>Gerencie suas finanças</p>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions">
+                            <a href="./transacoes.html" class="quick-action">
+                                <span class="quick-action-icon quick-income">＋</span>
+                                <span>
+                                    <strong>Adicionar transação</strong>
+                                    <small>Registre uma receita ou despesa</small>
+                                </span>
+                                <span class="quick-arrow" aria-hidden="true">›</span>
+                            </a>
+
+                            <a href="./transacoes.html" class="quick-action">
+                                <span class="quick-action-icon quick-history">↔</span>
+                                <span>
+                                    <strong>Ver movimentações</strong>
+                                    <small>Consulte seu histórico financeiro</small>
+                                </span>
+                                <span class="quick-arrow" aria-hidden="true">›</span>
+                            </a>
+
+                            <a href="./categorias.html" class="quick-action">
+                                <span class="quick-action-icon quick-categories">▦</span>
+                                <span>
+                                    <strong>Organizar categorias</strong>
+                                    <small>Classifique suas movimentações</small>
+                                </span>
+                                <span class="quick-arrow" aria-hidden="true">›</span>
+                            </a>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="panel transactions-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Transações recentes</h2>
+                            <p>Acompanhe suas últimas movimentações</p>
+                        </div>
+                        <a href="./transacoes.html" class="text-link">Ver todas <span aria-hidden="true">→</span></a>
+                    </div>
+
+                    <div class="transactions-table-wrapper">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Descrição</th>
+                                    <th scope="col">Categoria</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col" class="amount-column">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-transactions">
+                                <tr>
+                                    <td colspan="5" class="table-empty">
+                                        Carregando suas movimentações...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <footer class="dashboard-footer">
+                    <span>© <span id="current-year"></span> Finance Manager</span>
+                    <span>Suas finanças, mais organizadas.</span>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

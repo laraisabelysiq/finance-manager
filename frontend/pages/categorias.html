@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Organize suas receitas e despesas por categorias no Finance Manager.">
+    <title>Categorias | Finance Manager</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/categorias.css">
+    <script src="../js/config.js" defer></script>
+    <script src="../js/api.js" defer></script>
+    <script src="../js/categorias.js" defer></script>
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="../index.html">
+                <span class="brand-mark">F</span>
+                <span>Finance<span class="brand-light">Manager</span></span>
+            </a>
+
+            <p class="nav-caption">MENU PRINCIPAL</p>
+
+            <nav class="navigation" aria-label="Navegação principal">
+                <a class="nav-link" href="./dashboard.html">
+                    <span class="nav-icon">▦</span> Dashboard
+                </a>
+                <a class="nav-link" href="./transacoes.html">
+                    <span class="nav-icon">↔</span> Transações
+                </a>
+                <a class="nav-link active" href="./categorias.html" aria-current="page">
+                    <span class="nav-icon">◈</span> Categorias
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <span class="note-icon">✦</span>
+                    <strong>Organize suas finanças</strong>
+                    <p>Classifique suas movimentações e entenda melhor para onde vai seu dinheiro.</p>
+                </div>
+                <button class="logout-button" id="logoutButton" type="button">
+                    <span>↪</span> Sair da conta
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button class="menu-toggle" id="menuToggle" type="button"
+                    aria-label="Abrir menu" aria-expanded="false">☰</button>
+                <div class="breadcrumb">Finance Manager <span>/</span> Categorias</div>
+                <div class="topbar-status">
+                    <span class="status-dot"></span>
+                    Suas finanças
+                </div>
+            </header>
+
+            <section class="page-content">
+                <div class="page-heading">
+                    <div>
+                        <p class="eyebrow">ORGANIZAÇÃO FINANCEIRA</p>
+                        <h1>Categorias</h1>
+                        <p class="page-description">
+                            Organize suas movimentações em grupos que fazem sentido para você.
+                        </p>
+                    </div>
+                    <button class="button button-primary" id="newCategoryButton" type="button">
+                        <span>＋</span> Nova categoria
+                    </button>
+                </div>
+
+                <div class="feedback" id="pageMessage" role="status"
+                    aria-live="polite" hidden></div>
+
+                <section class="overview-grid" aria-label="Resumo das categorias">
+                    <article class="overview-card">
+                        <div class="overview-icon total-icon">◈</div>
+                        <div>
+                            <p>Total de categorias</p>
+                            <strong id="totalCategories">—</strong>
+                        </div>
+                    </article>
+                    <article class="overview-card">
+                        <div class="overview-icon income-icon">↙</div>
+                        <div>
+                            <p>Categorias de receita</p>
+                            <strong id="incomeCategoriesCount">—</strong>
+                        </div>
+                    </article>
+                    <article class="overview-card">
+                        <div class="overview-icon expense-icon">↗</div>
+                        <div>
+                            <p>Categorias de despesa</p>
+                            <strong id="expenseCategoriesCount">—</strong>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="panel form-panel" id="categoryFormPanel" hidden>
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">CONFIGURAÇÃO</p>
+                            <h2 id="formTitle">Criar categoria</h2>
+                            <p class="muted">Escolha um nome claro e o tipo correspondente.</p>
+                        </div>
+                        <button class="icon-button" id="closeFormButton" type="button"
+                            aria-label="Fechar formulário">×</button>
+                    </div>
+
+                    <form id="categoryForm">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="categoryName">Nome da categoria <span>*</span></label>
+                                <input id="categoryName" name="name" type="text"
+                                    minlength="1" maxlength="60"
+                                    placeholder="Ex.: Alimentação" required>
+                                <small>Use até 60 caracteres.</small>
+                            </div>
+
+                            <div class="field">
+                                <label for="categoryType">Tipo de categoria <span>*</span></label>
+                                <select id="categoryType" name="type" required>
+                                    <option value="expense">Despesa</option>
+                                    <option value="income">Receita</option>
+                                </select>
+                                <small>O tipo determina quais transações podem usar a categoria.</small>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="button button-secondary" id="cancelFormButton"
+                                type="button">Cancelar</button>
+                            <button class="button button-primary" id="saveCategoryButton"
+                                type="submit">Salvar categoria</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="panel categories-panel">
+                    <div class="panel-heading list-heading">
+                        <div>
+                            <h2>Suas categorias</h2>
+                            <p class="muted">Gerencie os grupos usados nas suas movimentações.</p>
+                        </div>
+                        <label class="search-box">
+                            <span aria-hidden="true">⌕</span>
+                            <input id="searchCategory" type="search"
+                                placeholder="Buscar categoria..." aria-label="Buscar categoria">
+                        </label>
+                    </div>
+
+                    <div class="category-groups">
+                        <section class="category-group">
+                            <div class="group-heading">
+                                <div class="group-symbol income-symbol">↙</div>
+                                <div>
+                                    <h3>Receitas</h3>
+                                    <p>Dinheiro que entra</p>
+                                </div>
+                                <span class="group-count" id="incomeGroupCount">0</span>
+                            </div>
+                            <div class="category-grid" id="incomeCategoryList">
+                                <p class="empty-state">Carregando categorias...</p>
+                            </div>
+                        </section>
+
+                        <section class="category-group">
+                            <div class="group-heading">
+                                <div class="group-symbol expense-symbol">↗</div>
+                                <div>
+                                    <h3>Despesas</h3>
+                                    <p>Dinheiro que sai</p>
+                                </div>
+                                <span class="group-count" id="expenseGroupCount">0</span>
+                            </div>
+                            <div class="category-grid" id="expenseCategoryList">
+                                <p class="empty-state">Carregando categorias...</p>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <span>Finance Manager</span>
+                    <span>Suas finanças, sob controle.</span>
+                </footer>
+            </section>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <dialog class="confirm-dialog" id="deleteDialog">
+        <div class="dialog-icon">!</div>
+        <h2>Excluir categoria?</h2>
+        <p id="deleteDialogMessage">
+            Deseja realmente excluir esta categoria?
+        </p>
+        <div class="dialog-actions">
+            <button class="button button-secondary" id="cancelDeleteButton" type="button">
+                Cancelar
+            </button>
+            <button class="button button-danger" id="confirmDeleteButton" type="button">
+                Excluir categoria
+            </button>
+        </div>
+    </dialog>
+</body>
+</html>
